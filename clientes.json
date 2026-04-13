@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "nombre": "Juan",
+    "email": "juan@gmail.com",
+    "tipo": "sucursal",
+    "direccion": "Calle Falsa 123",
+    "telefono": "123456789",
+    "estado": 1
+  },
+  {
+    "id": 2,
+    "nombre": "D1omingo",
+    "email": "Domingo@gmail.com",
+    "tipo": "franquicia",
+    "direccion": "Avenida Principal 4156",
+    "telefono": "91187654321",
+    "estado": 1
+  }
+]
