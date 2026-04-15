@@ -16,5 +16,14 @@
     "direccion": "Avenida Principal 4156",
     "telefono": "91187654321",
     "estado": 1
+  },
+  {
+    "nombre": "Sucursal Norte",
+    "email": "sucursal.norte@gmail.com",
+    "tipo": "sucursal",
+    "direccion": "Lorenzo 450",
+    "telefono": "47860590",
+    "id": 3,
+    "estado": 1
   }
 ]
