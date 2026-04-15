@@ -16,7 +16,7 @@ const postCliente = (req, res) => {
       return res.status(400).json({ error: 'Todos los campos son obligatorios' });
     }
     const nuevoCliente = crearCliente(req.body);
-    res.status(201).json(nuevoCliente);
+    res.status(201).json({ ...nuevoCliente, message: 'Cliente creado exitosamente' });
   } catch (error) {
     res.status(500).json({ error: 'No se pudo crear el cliente' });
   }
@@ -38,7 +38,7 @@ const putCliente = (req, res) => {
     const id = parseInt(req.params.id);
     const { nombre, email, tipo, direccion, telefono } = req.body;
     const clienteActualizado = actualizarCliente(id, { nombre, email, tipo, direccion, telefono });
-    res.json(clienteActualizado);
+    res.json(clienteActualizado, { message: 'Cliente actualizado correctamente' });
   } catch (error) {
     res.status(500).json({ error: 'No se pudo actualizar el cliente' });
     console.log(error); // 👈 para ver exactamente qué falló en la consola del servidor
