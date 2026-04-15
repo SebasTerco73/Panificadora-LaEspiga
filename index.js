@@ -1,11 +1,8 @@
-// Importa libreria express y crea el servidor
-const express = require('express');
-const app = express();
-
-// Configura el puerto
+const app = require('./app');
 const PORT = process.env.PORT || 3000;
 console.log(`Servidor disponible en http://localhost:${PORT}`);
 
+<<<<<<< HEAD
 // Middleware le dice al servidor que entienda JSON en el body de las requests
 app.use(express.json());
 
@@ -33,6 +30,8 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Ruta no encontrada' });
 });
 
+=======
+>>>>>>> e37cd398c3bbcd07188939c852befd435c4fdc92
 // arranca el servidor en el puerto definido
 app.listen(PORT, () => {
   console.log(`Servidor de La Espiga de Oro corriendo en el puerto ${PORT}`);
