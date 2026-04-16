@@ -8,7 +8,7 @@ app.use(express.json());
 // Middleware para servir archivos estáticos desde la carpeta 'public'
 app.use(express.static('public'));
 
-//  Configura la carpeta de vistas y el motor de plantillas Pug
+// Configura la carpeta de vistas y el motor de plantillas Pug
 app.set('views', './views');
 app.set('view engine', 'pug');
 
@@ -18,20 +18,25 @@ app.use(logger);
 
 // Ruta de ejemplo para renderizar una vista pug
 app.get('/', (req, res) => {
-  // no hace falta poner la extensión .pug, ya que el motor de plantillas ya sabe que es un archivo pug
   res.render('first_view');
 });
 
-// importa el router de clientes
+// IMPORTACIÓN DE RUTAS
 const clientesRoutes = require('./src/routes/clientes.routes');
-// todo lo que entre a /clientes lo manda al router de clientes
-app.use('/clientes', clientesRoutes);
+const productosRoutes = require('./src/routes/productos.routes');
+const pedidosRoutes = require('./src/routes/pedidos.routes');    
 
-// Rutas no encontradas
+// USO DE RUTAS
+app.use('/clientes', clientesRoutes);
+app.use('/productos', productosRoutes);
+app.use('/pedidos', pedidosRoutes);    
+
+// Rutas no encontradas (404)
 app.use((req, res) => {
   res.status(404).json({ error: 'Ruta no encontrada' });
 });
 
+// Manejador global de errores (500)
 app.use((err, req, res, next) => {
   console.error(err.message);
   res.status(500).json({ error: 'Error interno del servidor' });

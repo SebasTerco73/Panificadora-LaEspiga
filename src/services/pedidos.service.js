@@ -20,10 +20,10 @@ class PedidosService {
     const productosDb = leerJson(productosPath);
     const pedidos = leerJson(pedidosPath);
 
-    // 1. Validar Cliente
-    const cliente = clientes.find(c => c.id === clienteId && c.activo !== false);
+    // 1. Validar Cliente (Ajustado a tu modelo de datos)
+    const cliente = clientes.find(c => c.id === clienteId && c.estado === 1);
     if (!cliente) throw new Error("Cliente inválido o inactivo.");
-
+    
     // 2. Validar Productos y calcular total
     let total = 0;
     const productosValidados = items.map(item => {
