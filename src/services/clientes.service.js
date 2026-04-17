@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const Cliente = require('../models/cliente.model');
 
 // Rutas absolutas
 const clientesPath = path.join(__dirname, '../data/clientes.json');
@@ -30,8 +31,7 @@ const getClientesActivos = () => {
 const crearCliente = (datos) => {
   const clientes = leerClientes();
   const nuevoId = clientes.length > 0 ? Math.max(...clientes.map(c => c.id)) + 1 : 1;
-  const nuevoCliente = { ...datos, id: nuevoId, estado: 1 };
-  
+  const nuevoCliente = new Cliente({ ...datos, id: nuevoId, estado: 1 });
   clientes.push(nuevoCliente);
   guardarClientes(clientes);
   return nuevoCliente;
@@ -39,15 +39,32 @@ const crearCliente = (datos) => {
 
 const actualizarCliente = (id, datos) => {
   const clientes = leerClientes();
-  const clienteIndex = clientes.findIndex(c => c.id === Number(id)); // Aseguramos que sea número
-  
+  const clienteIndex = clientes.findIndex(c => c.id === Number(id));
+
   if (clienteIndex === -1) {
     throw new Error('Cliente no encontrado');
   }
-  
-  clientes[clienteIndex] = { ...clientes[clienteIndex], ...datos };
+
+  const clienteActual = clientes[clienteIndex];
+
+  const datosPermitidos = {};
+
+  // Cambiar solo los campos que vienen en el body (si vienen)
+  if (datos.nombre !== undefined) datosPermitidos.nombre = datos.nombre;
+  if (datos.email !== undefined) datosPermitidos.email = datos.email;
+  if (datos.tipo !== undefined) datosPermitidos.tipo = datos.tipo;
+  if (datos.direccion !== undefined) datosPermitidos.direccion = datos.direccion;
+  if (datos.telefono !== undefined) datosPermitidos.telefono = datos.telefono;
+
+  const clienteActualizado = new Cliente({
+    ...clienteActual,
+    ...datosPermitidos
+  });
+
+  clientes[clienteIndex] = clienteActualizado;
   guardarClientes(clientes);
-  return clientes[clienteIndex];
+
+  return clienteActualizado;
 };
 
 // REGLA DE BAJA (Soft Delete)

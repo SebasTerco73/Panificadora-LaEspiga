@@ -1,11 +1,19 @@
-const { getClientesActivos, crearCliente, eliminarCliente, actualizarCliente } = require('../services/clientes.service');
+const {
+  getClientesActivos,
+  crearCliente,
+  eliminarCliente,
+  actualizarCliente,
+} = require("../services/clientes.service");
 
 const getClientes = (req, res) => {
   try {
     const clientesActivos = getClientesActivos();
-    res.json(clientesActivos);
+    res.render("clientes", {
+      title: "Clientes",
+      clientes: clientesActivos,
+    });
   } catch (error) {
-    res.status(500).json({ error: 'No se pudo leer el archivo' });
+    res.status(500).json({ error: "No se pudo leer el archivo" });
   }
 };
 
@@ -13,12 +21,13 @@ const postCliente = (req, res) => {
   try {
     const { nombre, email, tipo, direccion, telefono } = req.body;
     if (!nombre || !email || !tipo || !direccion || !telefono) {
-      return res.status(400).json({ error: 'Todos los campos son obligatorios' });
+      return res.status(400).send("Faltan datos");
     }
-    const nuevoCliente = crearCliente(req.body);
-    res.status(201).json({ ...nuevoCliente, message: 'Cliente creado exitosamente' });
+    crearCliente(req.body);
+    res.redirect('/clientes');
   } catch (error) {
-    res.status(500).json({ error: 'No se pudo crear el cliente' });
+    console.log(error);
+    res.status(500).json({ error: "No se pudo crear el cliente" });
   }
 };
 
@@ -27,21 +36,26 @@ const deleteCliente = (req, res) => {
     // agarra la id del cliente a eliminar desde los parámetros de la URL
     const id = parseInt(req.params.id);
     eliminarCliente(id);
-    res.json({ message: 'Cliente eliminado correctamente' });
+    res.redirect('/clientes');
   } catch (error) {
-    res.status(500).json({ error: 'No se pudo eliminar el cliente' });
+    res.status(500).json({ error: "No se pudo eliminar el cliente" });
   }
 };
 
 const putCliente = (req, res) => {
-  try {    
+  try {
     const id = parseInt(req.params.id);
     const { nombre, email, tipo, direccion, telefono } = req.body;
-    const clienteActualizado = actualizarCliente(id, { nombre, email, tipo, direccion, telefono });
-    res.json(clienteActualizado, { message: 'Cliente actualizado correctamente' });
+    const clienteActualizado = actualizarCliente(id, {
+      nombre,
+      email,
+      tipo,
+      direccion,
+      telefono,
+    });
+    res.redirect('/clientes');
   } catch (error) {
-    res.status(500).json({ error: 'No se pudo actualizar el cliente' });
-    console.log(error); // 👈 para ver exactamente qué falló en la consola del servidor
+    res.status(500).json({ error: "No se pudo actualizar el cliente" });
   }
 };
 
