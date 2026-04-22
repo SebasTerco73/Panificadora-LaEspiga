@@ -21,7 +21,7 @@ class PedidosService {
     const pedidos = leerJson(pedidosPath);
 
     // 1. Validar Cliente
-    const cliente = clientes.find(c => c.id === clienteId && c.activo !== false);
+    const cliente = clientes.find(c => c.id === clienteId && c.estado !== false);
     if (!cliente) throw new Error("Cliente inválido o inactivo.");
 
     // 2. Validar Productos y calcular total
