@@ -1,5 +1,11 @@
 # Panificadora La Espiga — Back-End (PFO1)
 
+![STATUS](https://img.shields.io/badge/Status-En%20Desarrollo-green)
+![NODE](https://img.shields.io/badge/Node.js-LTS-339933?logo=node.js&logoColor=white)
+![EXPRESS](https://img.shields.io/badge/Express-5.x-000000?logo=express&logoColor=white)
+![PUG](https://img.shields.io/badge/Pug-Views-A86454?logo=pug&logoColor=white)
+![LICENSE](https://img.shields.io/badge/License-ISC-blue)
+
 Back-End del proyecto **Panificadora La Espiga**. Es una app **Node.js + Express** con renderizado de vistas usando **Pug** y archivos estáticos en `public/`.
 
 - Repo: https://github.com/SebasTerco73/Panificadora-LaEspiga
