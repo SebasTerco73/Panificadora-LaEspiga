@@ -1,9 +1,10 @@
 // ES Modules -> import 
 import express from 'express';
-const app = express();
-
 import path from 'path';
 import { fileURLToPath } from 'url';
+import logger from './src/middleware/logger.middleware.js';
+
+const app = express();
 
 // Obtener el directorio actual
 const __filename = fileURLToPath(import.meta.url);
@@ -20,36 +21,27 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 // ********* Middlewares ***************
 
-//  Configura la carpeta de vistas y el motor de plantillas Pug
-app.set('views',path.join(__dirname, 'views'));
+// Configura la carpeta de vistas y el motor de plantillas Pug
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // Middleware de logger personalizado
-// ES Modules -> import
-import logger from './src/middleware/logger.middleware.js';
 app.use(logger);
 
 // Ruta de ejemplo para renderizar una vista pug
 app.get('/', (req, res) => {
-  // no hace falta poner la extensión .pug, ya que el motor de plantillas ya sabe que es un archivo pug
   res.render('index');
 });
 
-// IMPORTACIÓN DE RUTAS
-const clientesRoutes = require('./src/routes/clientes.routes');
-const productosRoutes = require('./src/routes/productos.routes');
-const pedidosRoutes = require('./src/routes/pedidos.routes'); 
-const insumosRoutes = require('./src/routes/insumos.routes');
-const recetasRoutes = require('./src/routes/recetas.routes');
-const facturacionRoutes = require('./src/routes/facturacion.routes');
-
-// todo lo que entre a /param1 lo manda al router de param2
-app.use('/clientes', clientesRoutes);
-app.use('/productos', productosRoutes);
-app.use('/pedidos', pedidosRoutes);
-app.use('/insumos', insumosRoutes);
-app.use('/recetas', recetasRoutes);
-app.use('/facturacion', facturacionRoutes);
+// ==========================================
+// IMPORTACIÓN DE RUTAS (Ahora con import y .js)
+// ==========================================
+import clientesRoutes from './src/routes/clientes.routes.js';
+import productosRoutes from './src/routes/productos.routes.js';
+import pedidosRoutes from './src/routes/pedidos.routes.js'; 
+import insumosRoutes from './src/routes/insumos.routes.js';
+import recetasRoutes from './src/routes/recetas.routes.js';
+import facturacionRoutes from './src/routes/facturacion.routes.js';
 
 // USO DE RUTAS
 app.use('/clientes', clientesRoutes);

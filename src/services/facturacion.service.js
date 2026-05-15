@@ -1,43 +1,33 @@
-const fs = require('fs');
-const path = require('path');
-
-const clientesPath = path.join(__dirname, '../data/clientes.json');
-const pedidosPath = path.join(__dirname, '../data/pedidos.json');
-
-const leerJson = (ruta) => {
-  if (!fs.existsSync(ruta)) fs.writeFileSync(ruta, '[]', 'utf-8');
-  return JSON.parse(fs.readFileSync(ruta, 'utf-8'));
-};
+import Cliente from '../models/clientes.schema.js'; // <-- Ajusta el nombre de tu archivo de modelo de cliente si es distinto
+import Pedido from '../models/Pedido.js';
 
 class FacturacionService {
-  generarReporteFranquicias() {
-    const clientes = leerJson(clientesPath);
-    const pedidos = leerJson(pedidosPath);
+  async generarReporteFranquicias() {
+    // 1. Buscamos todas las franquicias activas directamente en MongoDB
+    const franquicias = await Cliente.find({ tipo: 'franquicia', estado: 1 });
 
-    // 1. Filtramos solo los clientes que son "franquicia" y están activos
-    const franquicias = clientes.filter(c => c.tipo === 'franquicia' && c.estado === 1);
-
-    // 2. Construimos el reporte iterando sobre cada franquicia
-    const reporte = franquicias.map(franquicia => {
+    // 2. Construimos el reporte usando Promise.all porque vamos a hacer consultas asíncronas dentro de un map
+    const reporte = await Promise.all(franquicias.map(async (franquicia) => {
+      
       // Buscamos los pedidos de esta franquicia que ya fueron entregados
-      const pedidosCompletados = pedidos.filter(p => 
-        p.clienteId === franquicia.id && 
-        p.estado === 'Entregado'
-      );
+      const pedidosCompletados = await Pedido.find({ 
+        clienteId: franquicia._id, // En Mongo, los IDs automáticos se llaman _id
+        estado: 'Entregado' 
+      });
 
       // Sumamos el total de esos pedidos
       const totalAdeudado = pedidosCompletados.reduce((suma, pedido) => suma + pedido.total, 0);
 
       return {
-        clienteId: franquicia.id,
+        clienteId: franquicia._id,
         nombreFranquicia: franquicia.nombre,
         pedidosEntregados: pedidosCompletados.length,
         totalAdeudado: totalAdeudado
       };
-    });
+    }));
 
     return reporte;
   }
 }
 
-module.exports = new FacturacionService();
+export default new FacturacionService();

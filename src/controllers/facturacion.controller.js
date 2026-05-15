@@ -1,9 +1,11 @@
-const facturacionService = require('../services/facturacion.service');
+import facturacionService from '../services/facturacion.service.js';
 
 class FacturacionController {
-  obtenerReporte = (req, res) => {
+  // Le agregamos la palabra 'async' antes de los parámetros
+  obtenerReporte = async (req, res) => {
     try {
-      const reporte = facturacionService.generarReporteFranquicias();
+      // Le agregamos la palabra 'await' para esperar la respuesta de la base de datos
+      const reporte = await facturacionService.generarReporteFranquicias();
       res.status(200).json({ error: false, data: reporte });
     } catch (error) {
       res.status(500).json({ error: true, mensaje: error.message });
@@ -11,4 +13,4 @@ class FacturacionController {
   };
 }
 
-module.exports = new FacturacionController();
+export default new FacturacionController();

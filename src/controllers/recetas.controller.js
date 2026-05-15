@@ -1,4 +1,5 @@
-const recetasService = require('../services/recetas.service');
+//const recetasService = require('../services/recetas.service');
+import recetasService from '../services/recetas.service.js';
 
 class RecetasController {
   obtenerTodas = (req, res) => {
@@ -30,4 +31,4 @@ class RecetasController {
   };
 }
 
-module.exports = new RecetasController();
+export default new RecetasController();

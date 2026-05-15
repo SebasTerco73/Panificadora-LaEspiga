@@ -1,4 +1,5 @@
-const insumosService = require('../services/insumos.service');
+//const insumosService = require('../services/insumos.service');
+import insumosService from '../services/insumos.service.js';
 
 class InsumosController {
   obtenerTodos = (req, res) => {
@@ -29,4 +30,4 @@ class InsumosController {
   };
 }
 
-module.exports = new InsumosController();
+export default new InsumosController();

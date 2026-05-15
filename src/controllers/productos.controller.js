@@ -13,14 +13,15 @@ class ProductosController {
     }
   };
 
-    crear = (req, res) => {
-      try {
-        const nuevoProducto = productosService.crear(req.body);
-        res.status(201).json({ error: false, data: nuevoProducto, mensaje: "Producto creado con éxito" });
-      } catch (error) {
-        res.status(400).json({ error: true, mensaje: error.message });
-      }
-    };
+    crear = async (req, res) => {
+    try {
+      // AQUÍ ESTÁ LA CLAVE: Hay que pasarle el req.body al servicio
+      const nuevoProducto = await productosService.crear(req.body); 
+      res.status(201).json({ error: false, data: nuevoProducto });
+    } catch (error) {
+      res.status(400).json({ error: true, mensaje: error.message });
+    }
+  };
 
   darDeBaja = (req, res) => {
     try {
