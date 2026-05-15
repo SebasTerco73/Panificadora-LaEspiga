@@ -27,7 +27,6 @@ app.set('view engine', 'pug');
 // Middleware de logger personalizado
 // ES Modules -> import
 import logger from './src/middleware/logger.middleware.js';
-
 app.use(logger);
 
 // Ruta de ejemplo para renderizar una vista pug
