@@ -41,16 +41,17 @@ import clientesRoutes from './src/routes/clientes.routes.js';
 import productosRoutes from './src/routes/productos.routes.js';
 import pedidosRoutes from './src/routes/pedidos.routes.js';
 
-// todo lo que entre a /param1 lo manda al router de param2
+// USO DE RUTAS
 app.use('/clientes', clientesRoutes);
 app.use('/productos', productosRoutes);
-app.use('/pedidos', pedidosRoutes);
+app.use('/pedidos', pedidosRoutes);    
 
-// Rutas no encontradas
+// Rutas no encontradas (404)
 app.use((req, res) => {
   res.status(404).json({ error: 'Ruta no encontrada' });
 });
 
+// Manejador global de errores (500)
 app.use((err, req, res, next) => {
   console.error(err.message);
   res.status(500).json({ error: 'Error interno del servidor' });

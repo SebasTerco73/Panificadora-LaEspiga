@@ -37,7 +37,7 @@ class PedidosService {
     // 1. Validar Cliente
     const cliente = clientes.find(c => c.id === clienteId && c.estado !== false);
     if (!cliente) throw new Error("Cliente inválido o inactivo.");
-
+    
     // 2. Validar Productos y calcular total
     let total = 0;
     const productosValidados = items.map(item => {
