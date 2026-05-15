@@ -2,8 +2,6 @@
 import express from 'express';
 import { 
   getClientes, 
-  getNuevoCliente,
-  getClienteEditar,
   postCliente, 
   deleteCliente, 
   putCliente
@@ -16,19 +14,24 @@ const router = express.Router();
 // LISTAR
 router.get('/', getClientes);
 
-// FORM CREAR
-router.get('/nuevo', getNuevoCliente);
-// crear cliente
+// NUEVA RUTA: devuelve JSON con todos los clientes para que el fetch la consuma
+router.get('/api', async (req, res) => {
+  try {
+    const clientes = await getClientesActivos();
+    res.json(clientes);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener clientes' });
+  }
+});
+
+// CREAR
 router.post('/', postCliente);
 
-// ELIMINAR
-router.post('/:id/eliminar', deleteCliente);
-
 // FORM EDITAR
-router.get('/:id/editar', getClienteEditar);
+router.put('/:id', putCliente);
 
-// EDITAR
-router.post('/:id/editar', putCliente);
+// ELIMINAR
+router.delete('/:id', deleteCliente);
 
 // ECMAScript Modules
 export default router;

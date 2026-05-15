@@ -1,89 +1,273 @@
+/* ── Variables de paleta panadería ── */
+:root {
+  --trigo:          #C8A96E;
+  --trigo-oscuro:   #8B6914;
+  --masa:           #F5EDD6;
+  --corteza:        #6B3E1E;
+  --corteza-oscuro: #4A2810;
+  --miga:           #FDF8EE;
+  --borde:          #D4B483;
+  --texto:          #3E2A0F;
+  --texto-suave:    #7A5C35;
+}
+
+/* ── Base ── */
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
-  background: #f4f4f4;
+  background: var(--masa);
+  color: var(--texto);
   text-align: center;
+  margin: 0;
 }
 
 h1 {
-  color: #8b0000;
+  color: var(--corteza);
+  font-size: 1.8rem;
+  margin-bottom: 0.4rem;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-  max-width: 500px;
-  margin: 20px auto;
+h2, h3 {
+  color: var(--corteza);
 }
 
-li {
-  padding: 12px;
-  border: 1px solid #ccc;
-  margin-bottom: 8px;
-  border-radius: 6px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+hr {
+  border: none;
+  border-top: 1px solid var(--borde);
+  margin: 1.5rem auto;
+  max-width: 900px;
 }
 
-li:hover {
-  background-color: #dcdcdc;
-  transition: 0.2s;
-}
-
-li div {
-  display: flex;
-  gap: 10px;
-}
-
-/* Contenedor centrado */
+/* ── Contenedor ── */
 .container {
-  margin-top: 50px;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  text-align: center;
 }
 
-input {
-  width: 300px;      /* ancho */
-  padding: 10px;     /* espacio interno */
-  font-size: 16px;   /* tamaño del texto */
-  margin-bottom: 5px;
+/* ── Logo ── */
+.container img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid var(--borde);
+  object-fit: cover;
+  margin: 1rem auto 1.5rem;
+  display: block;
 }
 
+/* ── Botones ── */
 .btn {
   display: inline-block;
-  margin: 10px;
-  padding: 12px 20px;
-  background: #8b0000;
-  color: white;
+  margin: 6px;
+  padding: 12px 22px;
+  background: var(--corteza);
+  color: var(--masa);
   text-decoration: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: bold;
-  transition: 0.2s;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn.disabled {
+  background: var(--borde);
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .btn:hover {
-  background: #a30000;
-  transform: scale(1.05);
+  background: var(--corteza-oscuro);
+  transform: scale(1.04);
 }
 
-button.btn {
-  border: none;
-  cursor: pointer;
-}
-
-/* Botón secundario (volver) */
 .secundario {
-  background: #555;
+  background: var(--trigo);
+  color: var(--corteza-oscuro);
 }
 
 .secundario:hover {
-  background: #333;
+  background: var(--trigo-oscuro);
+  color: var(--miga);
 }
 
-/* Botón de eliminar */
-.eliminar {
-  background: #c0392b;
+.eliminar, button[onclick*="eliminar"] {
+  background: #8B2020;
 }
 
-.eliminar:hover {
-  background: #e74c3c;
+.eliminar:hover, button[onclick*="eliminar"]:hover {
+  background: #6B1515;
+}
+
+/* ── Formulario ── */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  max-width: 700px;
+  margin: 20px auto;
+  background: var(--miga);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--borde);
+}
+
+form label {
+  width: 100%;
+  text-align: left;
+  font-weight: bold;
+  color: var(--corteza);
+  margin-bottom: -4px;
+}
+
+form input,
+form select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: white;
+  color: var(--texto);
+}
+
+form input:focus,
+form select:focus {
+  outline: none;
+  border-color: var(--corteza);
+}
+
+/* ── Tabla ── */
+table {
+  width: 90%;
+  max-width: 900px;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background: var(--miga);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--borde);
+}
+
+thead {
+  background: var(--corteza);
+  color: var(--masa);
+}
+
+th, td {
+  padding: 12px 16px;
+  text-align: left;
+}
+
+tbody tr:hover {
+  background-color: #EDE0C4;
+  transition: 0.2s;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #F5EDD6;
+}
+
+/* ── Botón cancelar ── */
+#btnCancelar {
+  background: var(--trigo);
+  color: var(--corteza-oscuro);
+}
+
+#btnCancelar:hover {
+  background: var(--trigo-oscuro);
+  color: var(--miga);
+}
+
+td .btn, td button {
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  margin: 2px;
+}
+
+/* ── Index ── */
+.logo-trigo {
+  font-size: 5rem;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+h1 {
+  font-size: 2.2rem;
+  color: var(--corteza);
+  margin-bottom: 0.2rem;
+}
+
+h2.subtitulo {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--texto-suave);
+  font-weight: normal;
+  margin-bottom: 2rem;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+.menu-grid .btn {
+  display: block;
+  margin: 0;
+}
+
+.logo-trigo {
+  font-size: 4rem;
+  line-height: 1;
+  width: 110px;
+  height: 110px;
+  background: white;
+  border-radius: 50%;
+  border: 3px solid var(--borde);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+@media (max-width: 600px) {
+
+  /* ── Index ── */
+  .menu-grid {
+    grid-template-columns: 1fr 1fr; /* 2 columnas en vez de 3 */
+  }
+
+  /* ── Formulario ── */
+  form {
+    padding: 14px;
+  }
+
+  /* ── Tabla: se hace scrolleable horizontalmente ── */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 95%;
+  }
+
+  /* ── Botones de acciones más chicos ── */
+  td .btn, td button {
+    padding: 4px 10px;
+    font-size: 0.78rem;
+  }
+
+  /* ── Botón volver centrado ── */
+  .btn.secundario {
+    display: block;
+    width: fit-content;
+    margin: 1rem auto;
+  }
 }

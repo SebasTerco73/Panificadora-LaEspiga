@@ -5,7 +5,13 @@ html
     link(rel="stylesheet" href="/styles/styles.css")
   body
     .container
-      h1 Panificadora - La Espiga de Oro
-
-      a.btn(href="/clientes") Ver clientes
-      a.btn(href="/clientes/nuevo") Crear cliente
+      .logo-trigo 🌾
+      h1 Panificadora
+      h2.subtitulo La Espiga de Oro
+      .menu-grid
+        a.btn(href="/clientes") Clientes
+        a.btn(href="/productos") Productos
+        a.btn(class="disabled" href="/pedidos") Pedidos
+        a.btn(class="disabled" href="/insumos") Insumos
+        a.btn(class="disabled" href="/recetas") Recetas
+        a.btn(class="disabled" href="/facturacion") Facturación

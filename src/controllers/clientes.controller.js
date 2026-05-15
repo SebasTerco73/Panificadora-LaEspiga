@@ -19,28 +19,6 @@ const getClientes = async (req, res) => {
   }
 };
 
-const getNuevoCliente = (req, res) => {
-  res.render('clientes_form');
-};
-
-const getClienteEditar = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const cliente = await getClientesActivosPorId(id);
-    if (!cliente) {
-      return res
-      .status(404)
-      .json({ error: "Cliente no encontrado" });
-    }
-
-    res.render('clientes_edit', { cliente });
-
-  } catch (error) {
-    res.status(500)
-    .json({ error: "No se pudo obtener el cliente" });
-  }
-};
-
 const postCliente = async (req, res) => {
   try {
     const { 
@@ -62,8 +40,8 @@ const postCliente = async (req, res) => {
       .status(400)
       .send("Faltan datos");
     }
-    await crearCliente(req.body);
-    res.redirect('/clientes');
+    const nuevo = await crearCliente(req.body);
+    res.status(201).json({ ok: true, cliente: nuevo }); // ← JSON, no redirect
 
   } catch (error) {
     console.log(error);
@@ -80,7 +58,7 @@ const deleteCliente = async(req, res) => {
     // agarra la id del cliente a eliminar desde los parámetros de la URL
     const id = req.params.id;
     await eliminarCliente(id);
-    res.redirect('/clientes');
+    res.json({ ok: true }); 
 
   } catch (error) {
     res.status(500).json({ error: "No se pudo eliminar el cliente" });
@@ -99,7 +77,7 @@ const putCliente = async(req, res) => {
       telefono
     } = req.body;
 
-    await actualizarCliente(id, {
+    const actualizado = await actualizarCliente(id, {
       nombre,
       email,
       tipo,
@@ -107,7 +85,7 @@ const putCliente = async(req, res) => {
       telefono,
     });
 
-    res.redirect('/clientes');
+    res.json({ ok: true, cliente: actualizado }); // ← JSON, no redirect
 
   } catch (error) {
     res.status(500).json({ error: "No se pudo actualizar el cliente" });
@@ -117,8 +95,6 @@ const putCliente = async(req, res) => {
 // ES Modules - no poner default si se exportan varias cosas
 export { 
   getClientes, 
-  getNuevoCliente,
-  getClienteEditar,
   postCliente, 
   deleteCliente, 
   putCliente };

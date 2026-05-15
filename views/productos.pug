@@ -1,0 +1,41 @@
+doctype html
+html
+  head
+    title Productos
+    link(rel="stylesheet" href="/styles/styles.css")
+  body
+    h1 Productos
+
+    form#formProducto
+      input#inputId(type="hidden")
+
+      label Nombre:
+      input#inputNombre(type="text" name="nombre" required)
+
+      label Categoría:
+      input#inputCategoria(type="text" name="categoria" required)
+
+      label Precio:
+      input#inputPrecio(type="number" name="precio" min="0" step="0.01" required)
+
+      label Stock:
+      input#inputStock(type="number" name="stock" min="0" step="1" required)
+
+      button.btn(type="submit") Guardar
+      button#btnCancelar.btn(type="button" style="display:none") Cancelar
+
+    hr
+
+    table
+      thead
+        tr
+          th Nombre
+          th Categoría
+          th Precio
+          th Stock
+          th Acciones
+      tbody#tablaProductos
+
+    a.btn.secundario(href="/") Volver
+
+    script(src="/js/productos.js")

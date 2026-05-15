@@ -7,28 +7,52 @@ class ProductosController {
   obtenerTodos = (req, res) => {
     try {
       const productos = productosService.obtenerTodos();
-      res.status(200).json({ error: false, data: productos });
+      res.render('productos', { productos });
     } catch (error) {
-      res.status(500).json({ error: true, mensaje: error.message });
+      res.status(500).json({ error: 'No se pudieron obtener los productos' });
     }
   };
 
-    crear = async (req, res) => {
+  obtenerApi = async (req, res) => {
     try {
-      // AQUÍ ESTÁ LA CLAVE: Hay que pasarle el req.body al servicio
-      const nuevoProducto = await productosService.crear(req.body); 
-      res.status(201).json({ error: false, data: nuevoProducto });
+      const productos = await productosService.obtenerTodos();
+      res.json(productos);
     } catch (error) {
-      res.status(400).json({ error: true, mensaje: error.message });
+      res.status(500).json({ error: 'Error al obtener productos' });
     }
   };
 
-  darDeBaja = (req, res) => {
+  crear = async (req, res) => {
     try {
-      const producto = productosService.darDeBaja(req.params.id);
-      res.status(200).json({ error: false, data: producto, mensaje: "Producto desactivado correctamente." });
+      const { nombre, categoria, precio, stock } = req.body;
+      if (!nombre || !categoria || !precio || stock === undefined) {
+        return res.status(400).json({ error: 'Faltan datos' });
+      }
+      const nuevo = await productosService.crear(req.body);
+      res.status(201).json({ ok: true, producto: nuevo });
     } catch (error) {
-      res.status(400).json({ error: true, mensaje: error.message });
+      res.status(500).json({ error: 'No se pudo crear el producto' });
+    }
+  };
+
+  actualizar = async (req, res) => {
+    try {
+      const { nombre, categoria, precio, stock } = req.body;
+      const actualizado = await productosService.actualizar(req.params.id, {
+        nombre, categoria, precio, stock
+      });
+      res.json({ ok: true, producto: actualizado });
+    } catch (error) {
+      res.status(500).json({ error: 'No se pudo actualizar el producto' });
+    }
+  };
+
+  darDeBaja = async (req, res) => {
+    try {
+      await productosService.darDeBaja(req.params.id);
+      res.json({ ok: true });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
     }
   };
 }

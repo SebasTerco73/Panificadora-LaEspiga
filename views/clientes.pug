@@ -6,14 +6,44 @@ html
   body
     h1 Lista de clientes
 
-    ul
-      each cliente in clientes
-        li
-          span #{cliente.nombre} - #{cliente.email} - #{cliente.telefono} - #{cliente.direccion} - #{cliente.tipo}
+    //- Formulario inline para crear/editar
+    form#formCliente
+      input#inputId(type="hidden")
 
-          div
-            a.btn(href=`/clientes/${cliente.id}/editar`) Editar
-            form(action=`/clientes/${cliente.id}/eliminar` method="POST" style="display:inline")
-              button.btn.eliminar(type="submit") X
+      label Nombre:
+      input#inputNombre(type="text" name="nombre" required)
+
+      label Email:
+      input#inputEmail(type="email" name="email" required)
+
+      label Teléfono:
+      input#inputTelefono(type="text" name="telefono" required)
+
+      label Dirección:
+      input#inputDireccion(type="text" name="direccion" required)
+
+      label Tipo:
+      select#inputTipo(name="tipo")
+        option(value="minorista") Minorista
+        option(value="mayorista") Mayorista
+        option(value="franquicia") Franquicia
+
+      button(type="submit" class="btn") Guardar
+      button#btnCancelar(class="btn secundario" type="button" style="display:none") Cancelar
+
+    hr
+
+    table
+      thead
+        tr
+          th Nombre
+          th Email
+          th Teléfono
+          th Dirección
+          th Tipo
+          th Acciones
+      tbody#tablaClientes
 
     a.btn.secundario(href="/") Volver
+
+    script(src="/js/clientes.js")
