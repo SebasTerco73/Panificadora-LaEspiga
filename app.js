@@ -31,16 +31,25 @@ app.get('/', (req, res) => {
 const clientesRoutes = require('./src/routes/clientes.routes');
 const productosRoutes = require('./src/routes/productos.routes');
 const pedidosRoutes = require('./src/routes/pedidos.routes'); 
+const insumosRoutes = require('./src/routes/insumos.routes');
+const recetasRoutes = require('./src/routes/recetas.routes');
+const facturacionRoutes = require('./src/routes/facturacion.routes');
 
 // todo lo que entre a /param1 lo manda al router de param2
 app.use('/clientes', clientesRoutes);
 app.use('/productos', productosRoutes);
 app.use('/pedidos', pedidosRoutes);
+app.use('/insumos', insumosRoutes);
+app.use('/recetas', recetasRoutes);
+app.use('/facturacion', facturacionRoutes);
 
 // USO DE RUTAS
 app.use('/clientes', clientesRoutes);
 app.use('/productos', productosRoutes);
-app.use('/pedidos', pedidosRoutes);    
+app.use('/pedidos', pedidosRoutes);
+app.use('/insumos', insumosRoutes);
+app.use('/recetas', recetasRoutes);
+app.use('/facturacion', facturacionRoutes);
 
 // Rutas no encontradas (404)
 app.use((req, res) => {

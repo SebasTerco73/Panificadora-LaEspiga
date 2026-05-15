@@ -2,12 +2,21 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
+// Rutas a nuestras "tablas" en la base de datos
 const pedidosPath = path.join(__dirname, '../data/pedidos.json');
 const clientesPath = path.join(__dirname, '../data/clientes.json');
 const productosPath = path.join(__dirname, '../data/productos.json');
+const recetasPath = path.join(__dirname, '../data/recetas.json');  
+const insumosPath = path.join(__dirname, '../data/insumos.json');
 
-const leerJson = (ruta) => JSON.parse(fs.readFileSync(ruta, 'utf-8'));
-const guardarJson = (ruta, datos) => fs.writeFileSync(ruta, JSON.stringify(datos, null, 2));
+const leerJson = (ruta) => {
+  if (!fs.existsSync(ruta)) fs.writeFileSync(ruta, '[]', 'utf-8');
+  return JSON.parse(fs.readFileSync(ruta, 'utf-8'));
+};
+
+const guardarJson = (ruta, datos) => {
+  fs.writeFileSync(ruta, JSON.stringify(datos, null, 2));
+};
 
 class PedidosService {
   obtenerTodos() {
@@ -20,11 +29,10 @@ class PedidosService {
     const productosDb = leerJson(productosPath);
     const pedidos = leerJson(pedidosPath);
 
-    // 1. Validar Cliente
-    const cliente = clientes.find(c => c.id === clienteId && c.estado !== false);
+    // Validar Cliente (Ajustado para usar estado: 1)
+    const cliente = clientes.find(c => c.id === clienteId && c.estado === 1);
     if (!cliente) throw new Error("Cliente inválido o inactivo.");
-    
-    // 2. Validar Productos y calcular total
+
     let total = 0;
     const productosValidados = items.map(item => {
       const producto = productosDb.find(p => p.id === item.productoId && p.activo);
@@ -56,6 +64,8 @@ class PedidosService {
     return nuevoPedido;
   }
 
+  //AUTOMATIZACIÓN DE STOCK
+
   actualizarEstado(id, nuevoEstado) {
     const estadosPermitidos = ['Pendiente', 'En Producción', 'Despachado', 'Entregado'];
     if (!estadosPermitidos.includes(nuevoEstado)) {
@@ -66,10 +76,56 @@ class PedidosService {
     const index = pedidos.findIndex(p => p.id === id);
     if (index === -1) throw new Error("Pedido no encontrado.");
 
-    pedidos[index].estado = nuevoEstado;
+    const pedido = pedidos[index];
+
+    // Solo descontamos stock si pasa a Producción por primera vez
+    if (pedido.estado === 'Pendiente' && nuevoEstado === 'En Producción') {
+      const recetas = leerJson(recetasPath);
+      const insumos = leerJson(insumosPath);
+
+      // 1. Calcular insumos totales requeridos para todo el pedido
+      const insumosRequeridos = {}; 
+
+      for (const item of pedido.productos) {
+        const receta = recetas.find(r => r.productoId === item.productoId);
+        if (!receta) {
+          throw new Error(`El producto ${item.nombre} no tiene una receta configurada. Imposible producir.`);
+        }
+
+        // Multiplicamos la cantidad del ingrediente por la cantidad de productos pedidos
+        for (const ing of receta.ingredientes) {
+          if (!insumosRequeridos[ing.insumoId]) insumosRequeridos[ing.insumoId] = 0;
+          insumosRequeridos[ing.insumoId] += (ing.cantidad * item.cantidad);
+        }
+      }
+
+      // 2. Verificar que haya stock suficiente de todo ANTES de descontar
+      for (const insumoId in insumosRequeridos) {
+        const insumoDb = insumos.find(i => i.id === insumoId);
+        if (!insumoDb) throw new Error(`Insumo ${insumoId} no encontrado.`);
+
+        const cantidadNecesaria = insumosRequeridos[insumoId];
+        if (insumoDb.stockActual < cantidadNecesaria) {
+          const faltante = cantidadNecesaria - insumoDb.stockActual;
+          throw new Error(`Stock insuficiente de ${insumoDb.nombre}. Faltan ${faltante} ${insumoDb.unidad}.`);
+        }
+      }
+
+      // 3. Descontar el stock (Si llegamos aquí, es porque alcanza todo)
+      for (const insumoId in insumosRequeridos) {
+        const insumoIndex = insumos.findIndex(i => i.id === insumoId);
+        insumos[insumoIndex].stockActual -= insumosRequeridos[insumoId];
+      }
+
+      // Guardamos el nuevo stock en la base de datos de insumos
+      guardarJson(insumosPath, insumos);
+    }
+
+    // Actualizamos el estado del pedido y guardamos
+    pedido.estado = nuevoEstado;
     guardarJson(pedidosPath, pedidos);
     
-    return pedidos[index];
+    return pedido;
   }
 }
 
