@@ -1,8 +1,12 @@
-// Importa y ejecuta dotenv para cargar variables de entorno desde el archivo .env
-require('dotenv').config();
+// EcmaScript Modules (ESM)
+import 'dotenv/config';
+import app from './app.js';
+import {conectarDB} from './src/config/db.js';
 
 const PORT = process.env.PORT || 3000;
-const app = require('./app');
+
+await conectarDB();
+
 console.log(`Servidor inicializando...`);
 
 // arranca el servidor en el puerto definido

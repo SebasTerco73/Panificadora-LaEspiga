@@ -1,6 +1,13 @@
-// Importa libreria express y crea el servidor
-const express = require('express');
+// ES Modules -> import 
+import express from 'express';
 const app = express();
+
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Obtener el directorio actual
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // ********* Middlewares ***************
 // le dice al servidor que entienda JSON en el body de las requests
@@ -10,15 +17,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // servir archivos estáticos desde la carpeta 'public'
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 // ********* Middlewares ***************
 
-// Configura la carpeta de vistas y el motor de plantillas Pug
-app.set('views', './views');
+//  Configura la carpeta de vistas y el motor de plantillas Pug
+app.set('views',path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // Middleware de logger personalizado
-const logger = require('./src/middleware/logger.middleware');
+// ES Modules -> import
+import logger from './src/middleware/logger.middleware.js';
 app.use(logger);
 
 // Ruta de ejemplo para renderizar una vista pug
@@ -62,4 +70,5 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Error interno del servidor' });
 });
 
-module.exports = app;
+// exporta con ES Modules
+export default app;

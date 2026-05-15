@@ -9,4 +9,8 @@ function logger(req, res, next) {
 
   next();
 }
-module.exports = logger;
+
+// commons js module export
+// module.exports = logger;
+// ECMAScript Modules 
+export default logger;

@@ -1,4 +1,9 @@
+// commonjs
+/*
 const pedidosService = require('../services/pedidos.service');
+*/
+// ES Modules
+import pedidosService from '../services/pedidos.service.js';
 
 class PedidosController {
   obtenerTodos = (req, res) => {
@@ -29,4 +34,7 @@ class PedidosController {
   };
 }
 
-module.exports = new PedidosController();
+// commonjs
+// module.exports = new PedidosController();
+// ES Modules
+export default new PedidosController();

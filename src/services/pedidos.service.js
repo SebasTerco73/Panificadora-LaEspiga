@@ -1,6 +1,20 @@
+// commonjs
+/*
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+*/
+// ES Modules
+import fs from 'fs';
+import path from 'path';
+import crypto from 'crypto';
+
+// Para obtener __dirname en ES Modules, se necesita esta configuración adicional
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Rutas absolutas
 
 // Rutas a nuestras "tablas" en la base de datos
 const pedidosPath = path.join(__dirname, '../data/pedidos.json');
@@ -129,4 +143,7 @@ class PedidosService {
   }
 }
 
-module.exports = new PedidosService();
+// commonjs
+// module.exports = new PedidosService();
+// ES Modules
+export default new PedidosService();

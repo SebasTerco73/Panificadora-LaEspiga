@@ -1,4 +1,7 @@
-const productosService = require('../services/productos.service');
+// commonjs 
+//const productosService = require('../services/productos.service');
+// ES Modules
+import productosService from '../services/productos.service.js';
 
 class ProductosController {
   obtenerTodos = (req, res) => {
@@ -29,4 +32,7 @@ class ProductosController {
   };
 }
 
-module.exports = new ProductosController();
+// commonjs
+// module.exports = new ProductosController();
+// ES Modules
+export default new ProductosController();

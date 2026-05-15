@@ -15,7 +15,7 @@
     "tipo": "franquicia",
     "direccion": "Avenida Principal 4156",
     "telefono": "91187654321",
-    "estado": 1
+    "estado": 0
   },
   {
     "id": 3,
@@ -28,29 +28,29 @@
   },
   {
     "id": 4,
-    "nombre": "Sebastian Matias",
+    "nombre": "Sebastian",
     "email": "sebasterco10@gmail.com",
-    "tipo": "sucursal",
-    "direccion": "Bouchard 1270",
-    "telefono": "01168695034",
+    "tipo": "asaaa",
+    "direccion": "asd",
+    "telefono": "asd",
     "estado": 0
   },
   {
     "id": 5,
-    "nombre": "Sebastian Matias",
+    "nombre": "Sasdad",
     "email": "sebasterco10@gmail.com",
-    "tipo": "sucursal",
-    "direccion": "Bouchard 1270",
-    "telefono": "01168695034",
+    "tipo": "a",
+    "direccion": "asda",
+    "telefono": "asd",
     "estado": 0
   },
   {
     "id": 6,
-    "nombre": "Sebastian Matias",
-    "email": "sebasterco10@gmail.com",
-    "tipo": "123",
-    "direccion": "Bouchard 1270",
-    "telefono": "01168695034",
+    "nombre": "asd",
+    "email": "asd@asd",
+    "tipo": "asd",
+    "direccion": "asdas",
+    "telefono": "asd",
     "estado": 0
   }
 ]
